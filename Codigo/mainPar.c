@@ -5,7 +5,7 @@
 
 int main()
 {
-    int ARRAY_SIZE = 75000;
+    int ARRAY_SIZE = 100000; //Tamanho do vetor
     int vetor[ARRAY_SIZE];
     int i;
     clock_t t;
@@ -14,11 +14,10 @@ int main()
     int j;
     int controleVar = 0;
 
-    for (i=0 ; i<ARRAY_SIZE; i++)              
+    for (i=0 ; i<ARRAY_SIZE; i++) //Populando o vetor
         vetor[i] = ARRAY_SIZE-i;
 
     printf("\nTamanho Array: %d\n", ARRAY_SIZE);
-    
 
     printf("Comecando a ordenar\n");
     if(debug == 1){
@@ -29,10 +28,11 @@ int main()
 
     t = clock();
 
-    for (i = 0; i <= ARRAY_SIZE; i++)
-    {
-        #pragma omp parallel for
-        for (j = controleVar; j < ARRAY_SIZE - 1; j = j + 2)
+    for (i = 0; i <= ARRAY_SIZE; i++) //Executa as trocas uma quantidade
+    {								  //de vezes igual ao tamanho do vetor
+        
+		#pragma omp parallel for      //Paraleliza as trocas
+        for (j = controleVar; j < ARRAY_SIZE - 1; j = j + 2) 
         {   
             if (vetor[j] > vetor[j+1])
             {
@@ -42,7 +42,7 @@ int main()
             }
         }
 
-        if(controleVar == 1){
+        if(controleVar == 1){ // Alterna entre as trocas a serem executadas
             controleVar = 0;
         }else{
             controleVar = 1;
@@ -60,7 +60,6 @@ int main()
     }
 
     printf("\nTempo de duracao: %f\n", time_taken);
-
     printf("\n");
     return 0;
 }
